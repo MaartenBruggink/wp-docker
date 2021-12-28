@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb:10.5
+    container_name: "db"
+    volumes:
+      - data:/var/lib/mysql
+    restart: "unless-stopped"
+    ports:
+      - "3307:3306"
+    env_file:
+      - ./config/local/.env
+
+  wordpress:
+    depends_on:
+      - db
+    build: "./wordpress"
+    container_name: "wp"
+    image: "wp"
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: "unless-stopped"
+    env_file:
+      - ./config/local/.env
+    working_dir: /var/www/html
+    volumes:
+      - ./wordpress/wp-content/themes:/var/www/html/wp-content/themes
+      - ./wordpress/wp-content/uploads:/var/www/html/wp-content/uploads
+      - ./wordpress/wp-config.php:/var/www/html/wp-config.php
+      - ./wordpress/.htaccess:/var/www/html/.htaccess
+      - ./wordpress/php_settings.ini:/usr/local/etc/php/conf.d/php_settings.ini
+
+volumes:
+  esdata:
+    driver: local
+  data:

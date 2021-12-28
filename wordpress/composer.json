@@ -1,0 +1,22 @@
+{
+	"config": {
+		"optimize-autoloader": true,
+		"apcu-autoloader": true
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://wpackagist.org"
+		}
+	],
+	"require": {
+		"composer/installers": "^1.6"
+	},
+	"extra": {
+		"installer-paths": {
+			"wp-content/plugins/{$name}/": [
+				"type:wordpress-plugin"
+			]
+		}
+	}
+}
